@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beggin Gdynia - Omlety</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #500613; /* Bordowe tło pasujące do grafik */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: sans-serif;
+        }
+        .gallery-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        
+        /* Kontenery dla plakatów, umożliwiające pozycjonowanie absolutne warstw */
+        .interactive-poster-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Warstwa z interaktywnymi obszarami */
+        .interactive-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Wspólny styl dla niewidzialnych stref klikania */
+        .hotspot {
+            position: absolute;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: background 0.2s ease;
+        }
+        
+        .hotspot:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- PLAKAT 1: POZYCJONOWANIE --- */
+        #spot-logo {
+            left: 41%;
+            width: 18%;
+            height: 7%;
+            top: 1%;
+            border-radius: 50%;
+        }
+        .left-spot {
+            left: 5%;
+            width: 50%;
+            height: 5.5%;
+        }
+        #spot-swiezo { top: 11%; }
+        #spot-bialkowo { top: 17%; }
+        #spot-bezglutenu { top: 23%; }
+        #spot-zdrowo { top: 29%; }
+
+        #spot-jajko-zdrowe {
+            left: 20%;
+            width: 60%;
+            height: 14%;
+            top: 60%;
+            border-radius: 12px;
+        }
+
+        /* --- PLAKAT 2: POZYCJONOWANIE (Siatka korzyści/niekorzyści) --- */
+        .them-spot { left: 4%; width: 42%; height: 6%; }
+        .us-spot { left: 54%; width: 42%; height: 6%; }
+
+        /* Wiersze dopasowane do ikon na drugim plakacie */
+        #them-glukoza { top: 52%; }
+        #them-spadek { top: 60%; }
+        #them-bialko { top: 68%; }
+        #them-odzywcze { top: 76%; }
+        #them-glod { top: 84%; }
+
+        #us-energia { top: 52%; }
+        #us-aminokwasy { top: 60%; }
+        #us-cholina { top: 68%; }
+        #us-b12 { top: 76%; }
+        #us-odzywcze { top: 84%; }
+
+
+        /* --- STYLIZACJA POPUPÓW (Tooltips) --- */
+        .custom-tooltip {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.98);
+            color: #500613;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            transform: translateY(10px);
+            z-index: 10;
+            max-width: 290px;
+            text-align: center;
+            line-height: 1.4;
+            box-sizing: border-box;
+        }
+
+        .custom-tooltip.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Specjalna klasa zwiększająca szerokość dymka tylko dla logo */
+        .custom-tooltip.logo-style {
+            max-width: 320px;
+            width: 85%;
+        }
+
+        .tooltip-title {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(80, 6, 19, 0.2);
+            padding-bottom: 4px;
+        }
+
+        /* Miniaturka mapy/witryny w tooltipie */
+        .tooltip-img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-top: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gallery-container">
+        
+        <!-- PLAKAT 1 -->
+        <div class="interactive-poster-wrapper">
+            <img src="plakat1.jpeg" alt="Beggin Gdynia Plakat 1" class="gallery-image">
+            
+            <div class="interactive-overlay">
+                <!-- LOGO BEGGIN -->
+                <div class="hotspot" id="spot-logo" data-text="<span class='tooltip-title'>📍 Odwiedź nas w Gdyni!</span>ul. Świętojańska 65<br>Gdynia Śródmieście<br><img src='witryna.jpg' class='tooltip-img' alt='Witryna lokalu'>"></div>
+
+                <!-- Hasła boczne -->
+                <div class="hotspot left-spot" id="spot-swiezo" data-text="Posiłek przygotowujemy na Twoich oczach ze świeżych i wysokojakościowych produktów."></div>
+                <div class="hotspot left-spot" id="spot-bialkowo" data-text="Wysokobiałkowy naturalny produkt to nawet 50 gramów wysoko przyswajalnego białka."></div>
+                <div class="hotspot left-spot" id="spot-bezglutenu" data-text="Używamy wyłącznie produktów oznakowanych jako bezglutenowe."></div>
+                <div class="hotspot left-spot" id="spot-zdrowo" data-text="Zamiast buły z węglowodanów i tłuszczów nasze omlety to przede wszystkim jajko, najzdrowszy produkt natury."></div>
+                
+                <!-- Losownik korzyści -->
+                <div class="hotspot" id="spot-jajko-zdrowe"></div>
+            </div>
+        </div>
+
+        <!-- PLAKAT 2 -->
+        <div class="interactive-poster-wrapper">
+            <img src="plakat2.jpeg" alt="Beggin Gdynia Plakat 2" class="gallery-image">
+            
+            <div class="interactive-overlay">
+                <!-- LEWA STRONA: THEM (Produkty mączne) -->
+                <div class="hotspot them-spot" id="them-glukoza" data-text="<span class='tooltip-title'>⚠️ Szybki wzrost glukozy</span>Klasyczne białe pieczywo ma wysoki indeks glikemiczny. Powoduje gwałtowny wyrzut cukru we krwi, co obciąża trzustkę i zmusza ją do produkcji dużych ilości insuliny."></div>
+                <div class="hotspot them-spot" id="them-spadek" data-text="<span class='tooltip-title'>📉 Szybki spadek energii</span>Po nagłym skoku cukru następuje jego gwałtowny spadek (hipoglikemia reaktywna). Skutkuje to natychmiastową sennością, brakiem koncentracji i tzw. 'zjazdem energetycznym'."></div>
+                <div class="hotspot them-spot" id="them-bialko" data-text="<span class='tooltip-title'>❌ Mało białka</span>Produkty mączne opierają się głównie na węglowodanach prostych. Brak pełnowartościowego białka sprawia, że posiłek ma niską sytość i nie regeneruje mięśni."></div>
+                <div class="hotspot them-spot" id="them-odzywcze" data-text="<span class='tooltip-title'>⚠️ Mało składników odżywczych</span>Przetworzona mąka pszenna jest oczyszczona z otrębów i zarodków. To źródło tzw. 'pustych kalorii' pozbawione kluczowych witamin z grupy B, żelaza czy magnezu."></div>
+                <div class="hotspot them-spot" id="them-glod" data-text="<span class='tooltip-title'>🍕 Organizm szybko woła o więcej</span>Przez brak błonnika i białka oraz ciągłe wahania cukru, żołądek błyskawiczne staje się pusty. Pojawiają się napady wilczego głodu i ochota na podjadanie słodkiego."></div>
+
+                <!-- PRAWA STRONA: US (Omlety z jajek) -->
+                <div class="hotspot us-spot" id="us-energia" data-text="<span class='tooltip-title'>⚡ Stabilniejsza energia</span>Jajka nie zawierają węglowodanów, więc nie podnoszą cukru. Zdrowe tłuszcze i białko trawią się powoli, dostarczając stabilne paliwo do działania przez wiele godzin."></div>
+                <div class="hotspot us-spot" id="us-aminokwasy" data-text="<span class='tooltip-title'>🍳 Komplet aminokwasów</span>Białko jaja kurzego to białko wzorcowe – zawiera wszystkie niezbędne aminokwasy egzogenne (których organizm sam nie wytwarza) w idealnych dla człowieka proporcjach."></div>
+                <div class="hotspot us-spot" id="us-cholina" data-text="<span class='tooltip-title'>🧠 Cholina dla mózgu</span>Żółtko to prawdziwa bomba cholinowa. Cholina wspiera budowę neuroprzekaźników, poprawia pamięć, przyspiesza naukę oraz chroni układ nerwowy przed starzeniem."></div>
+                <div class="hotspot us-spot" id="us-b12" data-text="<span class='tooltip-title'>🧬 Witamina B12</span>Niezbędna do produkcji czerwonych krwinek i prawidłowego działania metabolizmu komórkowego. Jeden omlet pokrywa znaczną część dziennego zapotrzebowania na tę witaminę."></div>
+                <div class="hotspot us-spot" id="us-odzywcze" data-text="<span class='tooltip-title'>🌟 Wysoka wartość odżywcza</span>Jajko zawiera niemal wszystkie witaminy (A, D, E, K oraz grupy B) oraz minerały (cynk, żelazo, selen). Są tu też luteina i zeaksantyna, dbające o Twój wzrok."></div>
+            </div>
+        </div>
+
+        <!-- Wspólny, jeden element tooltipu -->
+        <div class="custom-tooltip" id="tooltip"></div>
+    </div>
+
+    <script>
+        const hotspots = document.querySelectorAll('.hotspot');
+        const tooltip = document.getElementById('tooltip');
+
+        const atutyJajek = [
+            "<span class='tooltip-title'>Jajko to wsparcie mózgu i układu nerwowego</span>Cholina z żółtka produkuje acetylocholinę — kluczowy neuroprzekaźnik. Poprawia pamięć, koncentrację i funkcje poznawcze, zmniejsza ryzyko demencji i choroby Alzheimera.",
+            "<span class='tooltip-title'>Jajko to ochrona serca i układu krążenia</span>Wbrew obawom, jajka nie zwiększają ryzyka miażdżycy — badania epidemiologiczne potwierdzają, że wręcz zapobiegają chorobom sercowo-naczyniowym.",
+            "<span class='tooltip-title'>Jajko to działanie antybakteryjne i przeciwzapalne</span>Lizozym działa jak naturalny antybiotyk. Cystatyna hamuje bakterie, grzyby, choroby zapalne (np. zapalenie stawów, paradontoza) i tworzenie płytek amyloidowych w Alzheimera.",
+            "<span class='tooltip-title'>Jajko to wsparcie wątroby i układu pokarmowego</span>Żółtka są najlepszym źródłem fosfolipidów w diecie (3× więcej niż wątróbka). Cholina zapobiega niealkoholowemu stłuszczeniu wątroby, a lecytyna — kamicom żółciowym.",
+            "<span class='tooltip-title'>Jajko to regulacja metabolizmu i kontrola wagi</span>Niskokaloryczne (140 kcal/100 g), lekkostrawne i sycące. Regularne spożycie daje o 65% lepszy efekt odchudzania niż samo ograniczanie kalorii dzięki fosfolipidom regulującym metabolizm."
+        ];
+
+        hotspots.forEach(hotspot => {
+            
+            function showTooltip(e) {
+                const currentWrapper = hotspot.closest('.interactive-poster-wrapper');
+                currentWrapper.appendChild(tooltip);
+
+                let text = "";
+                
+                if (hotspot.id === 'spot-jajko-zdrowe') {
+                    const randomIndex = Math.floor(Math.random() * atutyJajek.length);
+                    text = atutyJajek[randomIndex];
+                } else {
+                    text = hotspot.getAttribute('data-text');
+                }
+
+                tooltip.innerHTML = text;
+
+                // Reset klas specjalnych
+                tooltip.className = 'custom-tooltip';
+
+                // Pobieramy pozycję kursora/dotknięcia względem kontenera plakatu
+                const rect = currentWrapper.getBoundingClientRect();
+                let clientX = e.clientX || (e.touches && e.touches[0].clientX);
+                let clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+                let posX = clientX - rect.left;
+                let posY = clientY - rect.top;
+
+                // --- INTELIGENTNE POZYCJONOWANIE DLA LOGO BEGGIN ---
+                if (hotspot.id === 'spot-logo') {
+                    tooltip.classList.add('logo-style'); // Powiększenie okienka dla ładniejszego wyglądu zdjęcia
+                    tooltip.classList.add('active');
+                    
+                    // Umieść dymek POD logiem (zamiast nad nim), żeby nie uciekał za ekran
+                    tooltip.style.left = `${posX - tooltip.offsetWidth / 2}px`;
+                    tooltip.style.top = `${posY + 25}px`; 
+                } else {
+                    // Dla wszystkich pozostałych przycisków standardowo: wyświetl NAD miejscem kliknięcia
+                    tooltip.classList.add('active');
+                    tooltip.style.left = `${posX - tooltip.offsetWidth / 2}px`;
+                    tooltip.style.top = `${posY - tooltip.offsetHeight - 15}px`;
+                }
+            }
+
+            function hideTooltip() {
+                tooltip.classList.remove('active');
+            }
+
+            hotspot.addEventListener('mouseenter', showTooltip);
+            hotspot.addEventListener('mouseleave', hideTooltip);
+
+            hotspot.addEventListener('touchstart', function(e) {
+                e.preventDefault(); 
+                showTooltip(e);
+            });
+        });
+
+        document.addEventListener('touchstart', function(e) {
+            if (!e.target.classList.contains('hotspot')) {
+                tooltip.classList.remove('active');
+            }
+        });
+    </script>
+
+</body>
+</html>
